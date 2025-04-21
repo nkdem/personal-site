@@ -73,30 +73,35 @@ jobs:
             git push origin main
           fi
 
-      - name: Wait for Argo CD sync and application rollout (Estimation)
-        run: |
-          echo "Waiting for Argo CD to sync and application to roll out..."
-          sleep 90 # Adjust this based on your observed sync and rollout time
-      - name: Verify deployed site version (Debugging grep)
+      - name: Verify deployed site version (Retry loop)
         env:
           SITE_DOMAIN: nkdem.net
           EXPECTED_SHA: ${{ github.sha }}
+          MAX_RETRIES: 10 # Set the maximum number of retries
+          RETRY_DELAY_SECONDS: 30 # Set the delay between retries in seconds
         run: |
           echo "Checking if the deployed site at https://${SITE_DOMAIN} shows commit ${EXPECTED_SHA}"
 
-          # Use curl to fetch the site content
-          SITE_CONTENT=$(curl -s -L --fail --retry 5 --retry-delay 10 -k https://${SITE_DOMAIN})
+          for attempt in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt $attempt of $MAX_RETRIES: Checking site content..."
+            # Use curl to fetch the site content
+            # Use || true to prevent the script from failing immediately if curl fails
+            SITE_CONTENT=$(curl -s -L -k https://${SITE_DOMAIN} || true)
 
-          # Print the fetched content to the logs for debugging
-          echo "--------------- Fetched site content ---------------"
-          echo "${SITE_CONTENT}"
-          echo "--------------------------------------------------"
+            # Print the fetched content to the logs for debugging (optional after initial debugging)
+            # echo "--------------- Fetched site content (Attempt $attempt) ---------------"
+            # echo "${SITE_CONTENT}"
+            # echo "--------------------------------------------------"
 
-          # Now grep the fetched content for the expected SHA
-          if echo "${SITE_CONTENT}" | grep "${EXPECTED_SHA}"; then
-            echo "Successfully verified deployed site version matches commit ${EXPECTED_SHA}"
-            exit 0 # Explicitly exit with 0 on success
-          else
-            echo "Error: Deployed site version does NOT match commit ${EXPECTED_SHA}"
-            exit 1 # Explicitly exit with 1 on failure
-          fi
+            # Check if the expected SHA is present in the site content
+            if echo "${SITE_CONTENT}" | grep -q "${EXPECTED_SHA}"; then
+              echo "Successfully verified deployed site version matches commit ${EXPECTED_SHA}"
+              exit 0 # Exit the job with 0 on success
+            else
+              echo "Expected SHA ${EXPECTED_SHA} not found in site content. Retrying in ${RETRY_DELAY_SECONDS} seconds."
+              sleep $RETRY_DELAY_SECONDS
+            fi
+          done
+
+          echo "Error: Deployed site version did NOT match commit ${EXPECTED_SHA} after $MAX_RETRIES attempts."
+          exit 1 # Exit the job with 1 if verification fails after all retries
