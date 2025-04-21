@@ -6,6 +6,8 @@ The source code to my (unfinished) [website](https://nkdem.net).
 ## Technology Stack
 *   **Frontend:**
     *   [Eleventy](https://www.11ty.dev/) (Static Site Generator)
+    *   [Tailwind CSS](https://tailwindcss.com/) (CSS Framework)
+    *   [Nunjucks](https://mozilla.github.io/nunjucks/) (Template Engine)
 *   **Containerization:**
     *   [Docker](https://www.docker.com/) (Containerization Platform)
     *   [Caddy](https://caddyserver.com/) (Web Server for Static Files)
