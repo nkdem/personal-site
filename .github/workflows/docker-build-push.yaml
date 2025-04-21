@@ -60,15 +60,15 @@ jobs:
           # Use yq to update the image tag in your deployment.yaml
           # Ensure the path 'deployment.yaml' is correct relative to the repository root
           # The path 'spec.template.spec.containers[0].image' points to the image field in the first container spec
-          yq e '.spec.template.spec.containers[0].image = "'"$NEW_IMAGE_TAG"'"' -i deployment.yaml
+          yq e '.spec.template.spec.containers[0].image = "'"$NEW_IMAGE_TAG"'"' -i k8s/deployment.yaml
 
           # Commit and push the updated manifest
           # Add the deployment.yaml file to staging
-          git add deployment.yaml
+          git add k8s/deployment.yaml
 
           # Check if there are any changes to commit
           if git diff --staged --quiet; then
-            echo "No changes to commit in deployment.yaml."
+            echo "No changes to commit in k8s/deployment.yaml."
           else
             git commit -m "CI: Update personal-site image to ${{ github.sha }}"
             # Push the changes back to the repository
