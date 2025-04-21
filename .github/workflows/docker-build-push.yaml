@@ -77,23 +77,26 @@ jobs:
         run: |
           echo "Waiting for Argo CD to sync and application to roll out..."
           sleep 90 # Adjust this based on your observed sync and rollout time
-      - name: Verify deployed site version
+      - name: Verify deployed site version (Debugging grep)
         env:
           SITE_DOMAIN: nkdem.net
           EXPECTED_SHA: ${{ github.sha }}
         run: |
           echo "Checking if the deployed site at https://${SITE_DOMAIN} shows commit ${EXPECTED_SHA}"
 
-          # Use curl to fetch the site content and check for the version marker
-          # -s: Silent
-          # -L: Follow redirects
-          # --fail: Fail the command if HTTP status is 400 or higher
-          # --retry 5: Retry the request up to 5 times
-          # --retry-delay 10: Wait 10 seconds between retries
-          # -k: Allow insecure connections (remove later once TLS is stable)
-          if curl -s -L --fail --retry 5 --retry-delay 10 -k https://${SITE_DOMAIN} | grep "${EXPECTED_SHA}"; then
+          # Use curl to fetch the site content
+          SITE_CONTENT=$(curl -s -L --fail --retry 5 --retry-delay 10 -k https://${SITE_DOMAIN})
+
+          # Print the fetched content to the logs for debugging
+          echo "--------------- Fetched site content ---------------"
+          echo "${SITE_CONTENT}"
+          echo "--------------------------------------------------"
+
+          # Now grep the fetched content for the expected SHA
+          if echo "${SITE_CONTENT}" | grep "${EXPECTED_SHA}"; then
             echo "Successfully verified deployed site version matches commit ${EXPECTED_SHA}"
+            exit 0 # Explicitly exit with 0 on success
           else
             echo "Error: Deployed site version does NOT match commit ${EXPECTED_SHA}"
-            exit 1 # Fail the CI job
+            exit 1 # Explicitly exit with 1 on failure
           fi
