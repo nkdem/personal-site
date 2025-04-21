@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: personal-site-deployment
+  labels:
+    app: personal-site
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: personal-site
+  template:
+    metadata:
+      labels:
+        app: personal-site
+    spec:
+      containers:
+      - name: personal-site-container
+        image: ghcr.io/nkdem/personal-site:latest 
+        ports:
+        - containerPort: 80
