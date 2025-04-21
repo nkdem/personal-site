@@ -77,7 +77,7 @@ jobs:
         env:
           SITE_DOMAIN: nkdem.net
           EXPECTED_SHA: ${{ github.sha }}
-          MAX_RETRIES: 10 # Set the maximum number of retries
+          MAX_RETRIES: 15 # Set the maximum number of retries
           RETRY_DELAY_SECONDS: 30 # Set the delay between retries in seconds
         run: |
           echo "Checking if the deployed site at https://${SITE_DOMAIN} shows commit ${EXPECTED_SHA}"
