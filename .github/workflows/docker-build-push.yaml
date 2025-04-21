@@ -52,13 +52,12 @@ jobs:
           # Use the Git SHA as the image tag for the deployment
           NEW_IMAGE_TAG="ghcr.io/${{ github.repository_owner }}/personal-site:${{ github.sha }}"
 
-          # Configure Git user and email for the commit
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git pull origin main # Pull latest changes to avoid merge conflicts
 
           # Use yq to update the image tag in your deployment.yaml
-          # Ensure the path 'deployment.yaml' is correct relative to the repository root
+          # Ensure the path 'k8s/deployment.yaml' is correct relative to the repository root
           # The path 'spec.template.spec.containers[0].image' points to the image field in the first container spec
           yq e '.spec.template.spec.containers[0].image = "'"$NEW_IMAGE_TAG"'"' -i k8s/deployment.yaml
 
@@ -71,8 +70,6 @@ jobs:
             echo "No changes to commit in k8s/deployment.yaml."
           else
             git commit -m "CI: Update personal-site image to ${{ github.sha }}"
-            # Push the changes back to the repository
-             Barriers the push to not trigger the CI again
             git push origin main
           fi
 
