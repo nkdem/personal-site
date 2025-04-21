@@ -5,6 +5,8 @@ export default async function(eleventyConfig) {
     eleventyConfig.setInputDirectory("src")
     eleventyConfig.setLayoutsDirectory("layouts")
     eleventyConfig.setOutputDirectory("dist")
+    eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
+
 
     // allows hot reloading when tailwind reloads
     eleventyConfig.setServerOptions({
