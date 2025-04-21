@@ -12,9 +12,14 @@ The source code to my (unfinished) [website](https://nkdem.net).
     *   [Docker](https://www.docker.com/) (Containerization Platform)
     *   [Caddy](https://caddyserver.com/) (Web Server for Static Files)
 *   **CI/CD & GitOps:**
-    *   [GitHub Actions](https://github.com/features/actions) 
     *   [Argo CD](https://argo-cd.readthedocs.io/) (GitOps Continuous Delivery)
     *   [GitHub Container Registry (GHCR)](https://github.com/features/packages) (Docker Image Registry)
+    *   [GitHub Actions](https://github.com/features/actions) 
+        * On new commits to `main` branch:
+            * Build Docker image
+            * Push Docker image to [GHCR](https://github.com/nkdem/personal-site/pkgs/container/personal-site)
+            * Update Kubernetes deployment with new image (Argo CD then syncs)
+            * Verify that the deployment is healthy
 *   **Kubernetes & Infrastructure:**
     *   [Kubernetes (k3s)](https://k3s.io/) (Lightweight Kubernetes Distribution)
     *   [Hetzner Cloud](https://www.hetzner.com/cloud) (Cloud Infrastructure Provider)
