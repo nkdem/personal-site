@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: personal-site-container
-          image: ghcr.io/nkdem/personal-site:73334bfd176b8203a44208f5b389b9fd93308169
+          image: ghcr.io/nkdem/personal-site:bb285dd29dded2cc66797a3d5ef797859925e200
           ports:
             - containerPort: 80
