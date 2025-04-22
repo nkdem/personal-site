@@ -1,20 +1,58 @@
 ---
 title: Not Specified
+links: [
+{
+  title: "blog",
+  url: "/blog/",
+}
+]
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Nikodem Bieniek's personal website" />
+    <meta name="author" content="Nikodem Bieniek" />
+    <meta name="keywords" content="Nikodem Bieniek, personal website, blog, technology, Computer Science, CS" />
+    <link rel="stylesheet" href="/style.css" />
     <title>{{ title }}</title>
   </head>
-  <body>
-    {{ content | safe }}
+  <body class="min-h-screen flex flex-col font-mono bg-neutral-50">
+    <div class="flex md:flex-row flex-col flex-1 mx-4 my-4">
+      <nav class="flex md:flex-col flex-row gap-4 items-center w-fit">
+        <a class="font-bold text-xl w-fit text-nowrap" href="/">Nikodem Bieniek </a>
+        <ul class="flex md:flex-col flex-row gap-2 italic w-full">
+          {% for link in links %}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
 
-      <footer class="site-footer">
-<p>Site Version: <a class="text-orange-300 underline" href="https://github.com/nkdem/personal-site/tree/{{ site.version }}">{{ site.version }}</a></p>
-</footer>
+      <main class="mx-auto max-w-lg mt-8 md:mt-0">
+        <h1 class="uppercase text-lg">
+          {% if title %}
+          {{ title }}
+          {% else %}
+          {{ page.title }}
+          {% endif %}
+        </h1>
+        <hr class="border-t-2 border-neutral-500 my-4" />
+        {{ content | safe }}
+      </main>
+    </div>
+    <footer class="p-4 text-center">
+      <p>
+        Site Version:
+        <a
+          class="text-orange-300 underline"
+          href="https://github.com/nkdem/personal-site/tree/{{ site.version }}"
+          >{{ site.version }}</a
+        >
+      </p>
+    </footer>
   </body>
 </html>
