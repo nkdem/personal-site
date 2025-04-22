@@ -1,1 +1,17 @@
 @import "tailwindcss";
+@font-face {
+    font-family: 'Overpass Mono';
+    src: url('/assets/fonts/OverpassMono-Regular.woff2') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Overpass Mono';
+    src: url('/assets/fonts/OverpassMono-Bold.woff2') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@theme {
+    --font-mono: 'Overpass Mono', monospace;
+}
