@@ -1,5 +1,6 @@
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import htmlmin from "html-minifier-terser";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import { DateTime } from "luxon";
 const now = String(Date.now());
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
@@ -64,4 +65,6 @@ export default async function (eleventyConfig) {
     return sortedYears;
   });
   eleventyConfig.addPlugin(pluginRss);
+
+  eleventyConfig.addPlugin(syntaxHighlight)
 }
