@@ -1,4 +1,5 @@
 import htmlmin from "html-minifier-terser"
+import { DateTime } from "luxon";
 const now = String(Date.now())
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 export default async function(eleventyConfig) {
@@ -26,4 +27,37 @@ export default async function(eleventyConfig) {
         }
         return content
     })
+    eleventyConfig.addPreprocessor("drafts", "*", (data, content) => {
+		if(data.draft && process.env.ELEVENTY_RUN_MODE === "build") {
+			return false;
+		}
+	});
+    eleventyConfig.addFilter("date", function(date) {
+        return DateTime.fromISO(date.toISOString()).toFormat("dd-MM-yyyy");
+    })
+    eleventyConfig.addFilter("sortEntriesByYear", function(entries) {
+        const years = {};
+        entries.forEach(entry => {
+            const date = new Date(entry.date);
+            const year = date.getFullYear();
+            if (!years[year]) {
+                years[year] = [];
+            }
+            years[year].push({
+                ...entry,
+            });
+        });
+    
+        // Sort each year's entries by date descending
+        Object.keys(years).forEach(year => {
+            years[year].sort((a, b) => new Date(b.date) - new Date(a.date));
+        });
+    
+        // Sort the years descending
+        const sortedYears = Object.entries(years)
+            .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA));
+    
+        return sortedYears;
+    });
+    
 }
