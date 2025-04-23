@@ -1,0 +1,45 @@
+---
+layout: base
+title: "Blog"
+eleventyImport:
+  collections: ["entry"]
+---
+
+{%- if collections.entry | length == 0 -%}
+<div class="flex flex-col py-4 gap-y-2">
+  <h1 class="text-lg font-bold">No entries yet :) </h1>
+</div>
+{%- else -%} {%- for year, entries in (collections.entry | sortEntriesByYear)
+-%}
+<div class="flex flex-col py-4 gap-y-2">
+  <h1 class="text-lg font-bold">{{ year }}</h1>
+  <ul>
+    {%- for entry in entries -%}
+    <li>
+      <span class="absolute float-left -left-36">
+        {{ entry.date | date }}
+      </span>
+      <a class="font-bold text-red-800 hover:underline" href="{{ entry.url }}">
+        {{ entry.data.title }}
+      </a>
+
+      <p>
+        {{ entry.data.description }}
+      </p>
+
+      <div>
+        {%- for tag in entry.data.topics -%}
+        <span>
+          <a
+            class="text-red-900 hover:underline"
+            href="/blog/tags/{{ tag | slugify }}"
+            >{{ tag }}</a
+          >
+        </span>
+        {%- endfor -%}
+      </div>
+    </li>
+    {%- endfor -%}
+  </ul>
+</div>
+{%- endfor -%} {%- endif -%}
