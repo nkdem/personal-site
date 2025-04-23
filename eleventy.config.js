@@ -64,6 +64,22 @@ export default async function (eleventyConfig) {
 
     return sortedYears;
   });
+
+  eleventyConfig.addFilter("sortEntriesByTopics", function (entries) {
+    const topics = {};
+    entries.forEach((entry) => {
+      entry.data.topics.forEach((topic) => {
+        if (!topics[topic]) {
+          topics[topic] = 0
+        }
+        topics[topic] += 1
+      });
+    });
+
+    console.log(topics)
+    return topics;
+  })
+
   eleventyConfig.addPlugin(pluginRss);
 
   eleventyConfig.addPlugin(syntaxHighlight)

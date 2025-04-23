@@ -30,6 +30,7 @@ eleventyImport:
       <div>
         {%- for tag in entry.data.topics -%}
         <span>
+          <!-- TODO: This link will fail -->
           <a
             class="text-red-900 hover:underline"
             href="/blog/tags/{{ tag | slugify }}"

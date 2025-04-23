@@ -1,0 +1,22 @@
+---
+layout: base
+title: "Blog"
+eleventyImport:
+  collections: ["entry"]
+---
+
+{%- if collections.entry | length == 0 -%}
+<div class="flex flex-col py-4 gap-y-2">
+  <h1 class="text-lg font-bold">No entries yet :)</h1>
+</div>
+{%- else -%} {%- for topic, count in (collections.entry | sortEntriesByTopics)
+-%}
+<div>
+  <!-- TODO: Make a page for specifc tags -->
+  <a
+    href="/"
+  >
+    {{ topic }} ({{ count }})
+  </a>
+</div>
+{%- endfor -%} {%- endif -%}
