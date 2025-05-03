@@ -1,4 +1,6 @@
 :80 {
     root * /srv
+    encode gzip
     file_server
+    header /assets/fonts/*.woff2 Cache-Control "public, max-age=31536000"
 }
