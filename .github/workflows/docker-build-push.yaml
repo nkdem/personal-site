@@ -2,24 +2,21 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main 
+      - main
+    paths-ignore:
+      - "infrastructure/**"
+      - "docs/**"
+
 jobs:
   build-publish-deploy:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # Need write permission to push manifest changes
-      packages: write  # Needed to push to GHCR registry
+      packages: write # Needed to push to GHCR registry
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # Install yq for modifying the YAML manifest
-      - name: Install yq
-        run: |
-          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq
-          sudo chmod +x /usr/local/bin/yq
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -36,7 +33,6 @@ jobs:
         with:
           context: .
           push: true
-          # Use the Git SHA as the image tag for better versioning
           tags: ghcr.io/${{ github.repository_owner }}/personal-site:${{ github.sha }},ghcr.io/${{ github.repository_owner }}/personal-site:latest
           platforms: linux/arm64
           cache-from: type=gha
@@ -44,59 +40,35 @@ jobs:
           build-args:
             GIT_SHA=${{ github.sha }}
 
-      - name: Update Kubernetes manifest with new image tag
-        # env:
-        #   # GITHUB_TOKEN is automatically provided by GitHub Actions
-        #   # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Not needed explicitly if token is used correctly by yq/git
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TS_AUTH_KEY }}
+
+      - name: Deploy via SSH
         run: |
-          # Use the Git SHA as the image tag for the deployment
-          NEW_IMAGE_TAG="ghcr.io/${{ github.repository_owner }}/personal-site:${{ github.sha }}"
+          ssh -o StrictHostKeyChecking=no root@personal-site-01 << 'EOF'
+            cd /root/site
+            docker pull ghcr.io/nkdem/personal-site:${{ github.sha }}
+            IMAGE_TAG=${{ github.sha }} docker compose up -d
+          EOF
 
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git pull origin main # Pull latest changes to avoid merge conflicts
-
-          # Use yq to update the image tag in your deployment.yaml
-          # Ensure the path 'k8s/deployment.yaml' is correct relative to the repository root
-          # The path 'spec.template.spec.containers[0].image' points to the image field in the first container spec
-          yq e '.spec.template.spec.containers[0].image = "'"$NEW_IMAGE_TAG"'"' -i k8s/deployment.yaml
-
-          # Commit and push the updated manifest
-          # Add the deployment.yaml file to staging
-          git add k8s/deployment.yaml
-
-          # Check if there are any changes to commit
-          if git diff --staged --quiet; then
-            echo "No changes to commit in k8s/deployment.yaml."
-          else
-            git commit -m "CI: Update personal-site image to ${{ github.sha }}"
-            git push origin main
-          fi
-
-      - name: Verify deployed site version (Retry loop)
+      - name: Verify deployed site version
         env:
           SITE_DOMAIN: nkdem.net
           EXPECTED_SHA: ${{ github.sha }}
-          MAX_RETRIES: 15 # Set the maximum number of retries
-          RETRY_DELAY_SECONDS: 30 # Set the delay between retries in seconds
+          MAX_RETRIES: 10
+          RETRY_DELAY_SECONDS: 10
         run: |
           echo "Checking if the deployed site at https://${SITE_DOMAIN} shows commit ${EXPECTED_SHA}"
 
           for attempt in $(seq 1 $MAX_RETRIES); do
             echo "Attempt $attempt of $MAX_RETRIES: Checking site content..."
-            # Use curl to fetch the site content
-            # Use || true to prevent the script from failing immediately if curl fails
             SITE_CONTENT=$(curl -s -L -k https://${SITE_DOMAIN} || true)
 
-            # Print the fetched content to the logs for debugging (optional after initial debugging)
-            # echo "--------------- Fetched site content (Attempt $attempt) ---------------"
-            # echo "${SITE_CONTENT}"
-            # echo "--------------------------------------------------"
-
-            # Check if the expected SHA is present in the site content
             if echo "${SITE_CONTENT}" | grep -q "${EXPECTED_SHA}"; then
               echo "Successfully verified deployed site version matches commit ${EXPECTED_SHA}"
-              exit 0 # Exit the job with 0 on success
+              exit 0
             else
               echo "Expected SHA ${EXPECTED_SHA} not found in site content. Retrying in ${RETRY_DELAY_SECONDS} seconds."
               sleep $RETRY_DELAY_SECONDS
@@ -104,4 +76,4 @@ jobs:
           done
 
           echo "Error: Deployed site version did NOT match commit ${EXPECTED_SHA} after $MAX_RETRIES attempts."
-          exit 1 # Exit the job with 1 if verification fails after all retries
+          exit 1

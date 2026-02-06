@@ -1,0 +1,23 @@
+domain: nkdem.net
+
+tailscale:
+  vpn_port: 41641
+  tag: web
+
+server:
+  name: personal-site-01
+  type: cax21
+  role: web
+  backups: false
+  work_dir: /root/site
+
+hetzner:
+  default_location: nbg1
+  image: rocky-10
+  project: personal-site
+  firewall_name: personal-site-firewall
+  ssh_key_name: personal-site-ssh
+
+ports:
+  http: 80
+  https: 443

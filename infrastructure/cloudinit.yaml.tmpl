@@ -1,0 +1,56 @@
+#cloud-config
+#
+# Personal Site Server - Cloud Init Configuration
+# Server: {{.ServerName}}
+#
+# After completion, SSH access is only available via Tailscale.
+# Connect using: ssh root@{{.ServerName}}
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - dnf-automatic
+  - epel-release
+
+runcmd:
+  - echo "Installing fail2ban from EPEL..."
+  - dnf install -y fail2ban
+
+  - echo "Installing Docker..."
+  - dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+  - dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  - systemctl enable --now docker
+
+  - echo "Installing Tailscale..."
+  - curl -fsSL https://tailscale.com/install.sh | sh
+
+  - echo "Connecting to Tailscale network..."
+  - tailscale up --authkey={{.TailscaleAuthKey}} --advertise-tags=tag:{{.TailscaleTag}} --ssh --accept-routes
+
+  - echo "Disabling OpenSSH (Tailscale SSH handles all access)..."
+  - systemctl disable --now sshd
+
+  - echo "Disabling firewalld (Hetzner cloud firewall handles security)..."
+  - systemctl disable --now firewalld
+
+  - echo "Configuring fail2ban..."
+  - systemctl enable fail2ban
+  - systemctl start fail2ban
+
+  - echo "Configuring automatic security updates..."
+  - sed -i 's/apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf
+  - systemctl enable dnf-automatic.timer
+  - systemctl start dnf-automatic.timer
+
+  - mkdir -p {{.WorkDir}}
+
+  - echo "Logging in to GHCR (public pull, no auth needed for public packages)..."
+  - docker pull ghcr.io/nkdem/personal-site:latest || true
+
+  - echo "Cloud-init setup complete!"
+
+final_message: "{{.ServerName}} is ready! Tailscale connected and Docker installed."
