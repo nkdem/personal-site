@@ -17,3 +17,15 @@ lorem ipsum dolor sit amet
 - return true
 }
 ```
+Test
+
+```py
+print("HELLO WORLD")
+```
+
+## Terminal Example
+
+{% terminal %}
+npm install express
+node server.js
+{% endterminal %}

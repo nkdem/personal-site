@@ -83,6 +83,14 @@ links: [
           document.getElementById('prism-theme').href=
             'https://unpkg.com/automad-prism-themes/dist/'+(d?'prism-tokyo-night':'prism-tokyo-night-light')+'.css';
         }
+        function copyTerminal(btn){
+          var cmds=btn.closest('.terminal').getAttribute('data-commands');
+          navigator.clipboard.writeText(cmds).then(function(){
+            var orig=btn.textContent;
+            btn.textContent='copied!';
+            setTimeout(function(){btn.textContent=orig;},1500);
+          });
+        }
       </script>
     </footer>
   </body>
