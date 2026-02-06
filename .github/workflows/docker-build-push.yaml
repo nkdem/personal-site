@@ -47,6 +47,7 @@ jobs:
 
       - name: Deploy via SSH
         run: |
+          scp -o StrictHostKeyChecking=no infrastructure/docker-compose.yml root@personal-site-01:/root/site/docker-compose.yml
           ssh -o StrictHostKeyChecking=no root@personal-site-01 << 'EOF'
             cd /root/site
             docker pull ghcr.io/nkdem/personal-site:${{ github.sha }}
