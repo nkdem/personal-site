@@ -1,7 +1,7 @@
 # Personal Site
 [![Build Project](https://github.com/nkdem/personal-site/actions/workflows/docker-build-push.yaml/badge.svg)](https://github.com/nkdem/personal-site/actions/workflows/docker-build-push.yaml)
 
-The source code to my (unfinished) [website](https://nkdem.net).
+The source code to my [website](https://nkdem.net).
 
 ## Technology Stack
 *   **Frontend:**
@@ -10,21 +10,11 @@ The source code to my (unfinished) [website](https://nkdem.net).
     *   [Nunjucks](https://mozilla.github.io/nunjucks/) (Template Engine)
 *   **Containerization:**
     *   [Docker](https://www.docker.com/) (Containerization Platform)
-    *   [Caddy](https://caddyserver.com/) (Web Server for Static Files)
-*   **CI/CD & GitOps:**
-    *   [Argo CD](https://argo-cd.readthedocs.io/) (GitOps Continuous Delivery)
-    *   [GitHub Container Registry (GHCR)](https://github.com/features/packages) (Docker Image Registry)
-    *   [GitHub Actions](https://github.com/features/actions) 
-        * On new commits to `main` branch:
-            * Build Docker image
-            * Push Docker image to [GHCR](https://github.com/nkdem/personal-site/pkgs/container/personal-site)
-            * Update Kubernetes deployment with new image (Argo CD then syncs)
-            * Verify that the deployment is healthy
-*   **Kubernetes & Infrastructure:**
-    *   [Kubernetes (k3s)](https://k3s.io/) (Lightweight Kubernetes Distribution)
-    *   [Hetzner Cloud](https://www.hetzner.com/cloud) (Cloud Infrastructure Provider)
-    *   [Traefik](https://traefik.io/) (Ingress Controller - built into k3s)
-    *   [Cert-Manager](https://cert-manager.io/) (Automated TLS Certificate Management)
-    *   [Let's Encrypt](https://letsencrypt.org/) (Free SSL Certificates)
-
-Running on a Hetzner VPS with K3s. (See [repo for my k8 infra](https://github.com/nkdem/k8-infra))
+    *   [Caddy](https://caddyserver.com/) (Web Server)
+*   **CI/CD:**
+    *   [GitHub Actions](https://github.com/features/actions) — build, push to [GHCR](https://github.com/nkdem/personal-site/pkgs/container/personal-site), deploy via Tailscale SSH
+*   **Infrastructure:**
+    *   [Hetzner Cloud](https://www.hetzner.com/cloud) (VPS)
+    *   [Pulumi](https://www.pulumi.com/) (Infrastructure as Code)
+    *   [Cloudflare](https://www.cloudflare.com/) (DNS, TLS termination)
+    *   [Tailscale](https://tailscale.com/) (SSH access)
