@@ -18,12 +18,21 @@ links: [
     <meta name="keywords" content="Nikodem Bieniek, personal website, blog, technology, Computer Science, CS" />
     <link rel="stylesheet" href="/style.css?v={{site.version}}" />
     <link
+    id="prism-theme"
     href="https://unpkg.com/automad-prism-themes/dist/prism-tokyo-night-light.css"
     rel="stylesheet"
   />
     <title>{{ title }}</title>
+    <script>
+      (function(){
+        var d=localStorage.getItem('theme')==='dark';
+        if(d)document.documentElement.classList.add('dark');
+        document.getElementById('prism-theme').href=
+          'https://unpkg.com/automad-prism-themes/dist/'+(d?'prism-tokyo-night':'prism-tokyo-night-light')+'.css';
+      })();
+    </script>
   </head>
-  <body class="min-h-screen flex flex-col font-mono bg-neutral-50">
+  <body class="min-h-screen flex flex-col font-mono bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200">
     <div class="flex md:flex-row flex-col flex-1 mx-4 my-4">
       <nav class="flex md:flex-col flex-row gap-4 items-center w-fit">
         <a class="font-bold text-xl w-fit text-nowrap" href="/">Nikodem Bieniek </a>
@@ -44,26 +53,37 @@ links: [
           {{ page.title }}
           {% endif %}
         </h1>
-        <hr class="border-t-2 border-neutral-500 my-4" />
+        <hr class="border-t-2 border-neutral-500 dark:border-neutral-600 my-4" />
         {{ content | safe }}
       </main>
     </div>
     <footer class="flex flex-col p-4 text-center">
       <p>
-        <a class="text-red-800 font-bold"
+        <a class="text-red-800 dark:text-red-400 font-bold"
           href="/feed.xml"
         >
-         RSS Feed 
+         RSS Feed
         </a>
       </p>
       <p>
         Site Version:
         <a
-          class="text-orange-300 underline"
+          class="text-orange-300 dark:text-orange-400 underline"
           href="https://github.com/nkdem/personal-site/tree/{{ site.version }}"
           >{{ site.version }}</a
         >
       </p>
+      <p>
+        <a onclick="toggleTheme()" style="cursor:pointer">light/dark</a>
+      </p>
+      <script>
+        function toggleTheme(){
+          var d=document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme',d?'dark':'light');
+          document.getElementById('prism-theme').href=
+            'https://unpkg.com/automad-prism-themes/dist/'+(d?'prism-tokyo-night':'prism-tokyo-night-light')+'.css';
+        }
+      </script>
     </footer>
   </body>
 </html>

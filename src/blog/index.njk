@@ -19,7 +19,7 @@ eleventyImport:
       <span class="absolute float-left -left-36">
         {{ entry.date | date }}
       </span>
-      <a class="font-bold text-red-800 hover:underline" href="{{ entry.url }}">
+      <a class="font-bold text-red-800 dark:text-red-400 hover:underline" href="{{ entry.url }}">
         {{ entry.data.title }}
       </a>
 
@@ -32,7 +32,7 @@ eleventyImport:
         <span>
           <!-- TODO: This link will fail -->
           <a
-            class="text-red-900 hover:underline"
+            class="text-red-900 dark:text-red-400 hover:underline"
             href="/blog/tags/{{ tag | slugify }}"
             >{{ tag }}</a
           >
