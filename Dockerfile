@@ -1,4 +1,4 @@
-FROM node:22.14-alpine AS builder
+FROM oven/bun:1.3-alpine AS builder
 
 ARG GIT_SHA
 RUN if [ -z "${GIT_SHA}" ]; then \
@@ -9,14 +9,13 @@ ENV ELEVENTY_GIT_SHA=${GIT_SHA}
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json bun.lock ./
 
-RUN corepack enable pnpm
-RUN pnpm install --frozen-lockfile 
+RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm run build 
+RUN bun run build
 
 # Stage 2: Build Caddy v2.10.0 from source
 FROM golang:1.24-alpine AS caddy_builder
@@ -39,7 +38,7 @@ COPY --from=caddy_builder /usr/local/bin/caddy /usr/local/bin/caddy
 
 WORKDIR /srv
 
-COPY --from=builder /app/dist /srv 
+COPY --from=builder /app/dist /srv
 
 COPY Caddyfile /etc/caddy/Caddyfile
 

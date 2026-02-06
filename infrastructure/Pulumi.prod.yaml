@@ -1,0 +1,11 @@
+config:
+  personal-site-infrastructure:hetznerToken:
+    secure: AAABAIXbMt9nND8D8tZYfj9DLrq0yjY2CGahYEcdlSTbd8anMaz9wvbvJVCaq582XzSRRL4152z17dHWA/OITdmgfLuilkpcOYxIVLxwFQCpoGRl2fFg+9gqOGdRYUjN
+  personal-site-infrastructure:cloudflareAPIToken:
+    secure: AAABAHQnkwNjMp6H47BoFQ6aYjiWghSp73m39b9yN/ZJvmIuFM9QshuSxL7AhTOa5DA776GKuO2xdjQc5L0Mxa+ugApadMwI
+  personal-site-infrastructure:cloudflareZoneId:
+    secure: AAABAMtklXt5hrQ8pv6AopWDw2u163jVyVweHN4Ws2fTC438iucOz2/4MYfr0VIuBor7soGN+GC/d7dtlS7Mog==
+  personal-site-infrastructure:tailscaleAuthKey:
+    secure: AAABAKBcNQZJGGvVXBi9JwKUaGZ+zTxahhXL7Geod6nDHso7CDbrTpRHbKcDBWOlg8Ri77OadiGAJwZIJVk4FMmPlUMkY2Gn+zmCfIxbnMWfUX5NIHkH2R9mbuUH
+  personal-site-infrastructure:hetznerSSHPublicKey:
+    secure: AAABAO5UnnVNbVeC8yKaEiUjDokzg2BQjedijacRY0YLdVAOpdvTpJUA5+X2OBUg0V/Cedpz4j/xNg/e1ECvPHSndEDC+LsNFRFSQ8Zv/ryy4wM7RHb9NNz2TmTdWT1kiN/lia060gSFJuUc8ZlCfA==

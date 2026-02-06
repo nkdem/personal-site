@@ -1,0 +1,7 @@
+services:
+  personal-site:
+    image: ghcr.io/nkdem/personal-site:${IMAGE_TAG:-latest}
+    container_name: personal-site
+    restart: unless-stopped
+    ports:
+      - "80:80"
