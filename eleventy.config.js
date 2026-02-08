@@ -65,6 +65,21 @@ export default async function (eleventyConfig) {
     return sortedYears;
   });
 
+  eleventyConfig.addCollection("topics", function (collectionApi) {
+    const entries = collectionApi.getFilteredByTag("entry");
+    const topics = new Set();
+    entries.forEach((entry) => {
+      (entry.data.topics || []).forEach((topic) => topics.add(topic));
+    });
+    return [...topics];
+  });
+
+  eleventyConfig.addFilter("filterByTopic", function (entries, topic) {
+    return entries.filter((entry) =>
+      (entry.data.topics || []).includes(topic)
+    );
+  });
+
   eleventyConfig.addFilter("sortEntriesByTopics", function (entries) {
     const topics = {};
     entries.forEach((entry) => {

@@ -1,0 +1,31 @@
+---
+layout: base
+prose: false
+eleventyImport:
+  collections: ["entry"]
+pagination:
+  data: collections.topics
+  size: 1
+  alias: topic
+permalink: "/blog/tags/{{ topic | slugify }}/"
+eleventyComputed:
+  title: "{{ topic }}"
+---
+
+<a class="text-sm text-neutral-500 dark:text-neutral-400 hover:underline" href="/blog/">&larr; all posts</a>
+
+<ul class="flex flex-col gap-y-6 mt-4">
+  {%- for entry in collections.entry | filterByTopic(topic) -%}
+  <li>
+    <span class="text-sm text-neutral-500 dark:text-neutral-400">
+      {{ entry.date | date }}
+    </span>
+    <a class="block font-bold text-red-800 dark:text-red-400 hover:underline" href="{{ entry.url }}">
+      {{ entry.data.title }}
+    </a>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400">
+      {{ entry.data.description }}
+    </p>
+  </li>
+  {%- endfor -%}
+</ul>
