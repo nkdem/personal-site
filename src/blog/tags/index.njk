@@ -12,9 +12,9 @@ eleventyImport:
 {%- else -%} {%- for topic, count in (collections.entry | sortEntriesByTopics)
 -%}
 <div>
-  <!-- TODO: Make a page for specifc tags -->
   <a
-    href="/"
+    class="text-red-800 dark:text-red-400 hover:underline"
+    href="/blog/tags/{{ topic | slugify }}/"
   >
     {{ topic }} ({{ count }})
   </a>

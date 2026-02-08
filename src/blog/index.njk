@@ -1,6 +1,7 @@
 ---
 layout: base
 title: "Blog"
+prose: false
 eleventyImport:
   collections: ["entry"]
 ---
@@ -13,30 +14,25 @@ eleventyImport:
 -%}
 <div class="flex flex-col py-4 gap-y-2">
   <h1 class="text-lg font-bold">{{ year }}</h1>
-  <ul>
+  <ul class="flex flex-col gap-y-6">
     {%- for entry in entries -%}
     <li>
-      <span class="absolute float-left -left-36">
+      <span class="text-sm text-neutral-500 dark:text-neutral-400">
         {{ entry.date | date }}
       </span>
-      <a class="font-bold text-red-800 dark:text-red-400 hover:underline" href="{{ entry.url }}">
+      <a class="block font-bold text-red-800 dark:text-red-400 hover:underline" href="{{ entry.url }}">
         {{ entry.data.title }}
       </a>
 
-      <p>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400">
         {{ entry.data.description }}
       </p>
 
-      <div>
+      <div class="flex flex-wrap gap-1.5 mt-1">
         {%- for tag in entry.data.topics -%}
-        <span>
-          <!-- TODO: This link will fail -->
-          <a
-            class="text-red-900 dark:text-red-400 hover:underline"
-            href="/blog/tags/{{ tag | slugify }}"
-            >{{ tag }}</a
-          >
-        </span>
+        <a href="/blog/tags/{{ tag | slugify }}/" class="text-xs px-2 py-0.5 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors no-underline">
+          {{ tag }}
+        </a>
         {%- endfor -%}
       </div>
     </li>

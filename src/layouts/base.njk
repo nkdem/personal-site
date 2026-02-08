@@ -54,7 +54,13 @@ links: [
           {% endif %}
         </h1>
         <hr class="border-t-2 border-neutral-500 dark:border-neutral-600 my-4" />
-        {{ content | safe }}
+        {% if prose !== false %}
+        <div class="prose dark:prose-invert">
+        {% endif %}
+          {{ content | safe }}
+        {% if prose !== false %}
+        </div>
+        {% endif %}
       </main>
     </div>
     <footer class="flex flex-col p-4 text-center">
