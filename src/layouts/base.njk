@@ -53,6 +53,15 @@ links: [
           {{ page.title }}
           {% endif %}
         </h1>
+        {% if topics %}
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          {%- for tag in topics -%}
+          <a href="/blog/tags/{{ tag | slugify }}/" class="text-xs px-2 py-0.5 rounded-full border border-neutral-300 dark:border-neutral-600 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors no-underline">
+            {{ tag }}
+          </a>
+          {%- endfor -%}
+        </div>
+        {% endif %}
         <hr class="border-t-2 border-neutral-500 dark:border-neutral-600 my-4" />
         {% if prose !== false %}
         <div class="prose dark:prose-invert">
