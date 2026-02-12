@@ -116,6 +116,14 @@ export default async function (eleventyConfig) {
 </div>`;
   });
 
+  eleventyConfig.addPairedShortcode("tooltip", function (content, text) {
+    const id = `tooltip-${Math.random().toString(36).substr(2, 9)}`;
+    return `<span class="tooltip-wrapper">
+      <span class="tooltip-trigger" aria-describedby="${id}">${text}</span>
+      <span class="tooltip-content" id="${id}" role="tooltip">${content}</span>
+    </span>`;
+  });
+
   eleventyConfig.addPlugin(pluginRss);
 
   eleventyConfig.addPlugin(syntaxHighlight)

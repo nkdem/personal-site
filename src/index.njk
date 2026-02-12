@@ -9,10 +9,134 @@ links:
   ]
 ---
 
+<style>
+@keyframes fade-out-n {
+  0%, 10% {
+    opacity: 1;
+  }
+  16.67%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-n {
+  0%, 10% {
+    opacity: 0;
+  }
+  16.67%, 100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shrink-wrapper {
+  0%, 10% {
+    width: 0.75em;
+  }
+  16.67%, 100% {
+    width: 0.6em;
+  }
+}
+
+@keyframes compress-vowel {
+  0%, 20% {
+    opacity: 1;
+    text-decoration: none;
+    max-width: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  26.67%, 40% {
+    opacity: 0.4;
+    text-decoration: line-through;
+    max-width: 1em;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  50%, 100% {
+    opacity: 0;
+    text-decoration: line-through;
+    max-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@keyframes pulse-fade {
+  /* Animation phase — no pulsing */
+  0%, 27% {
+    opacity: 1;
+  }
+  /* Slow pulses */
+  35% { opacity: 0.6; }
+  42% { opacity: 1; }
+  49% { opacity: 0.6; }
+  55% { opacity: 1; }
+  /* Medium pulses */
+  60% { opacity: 0.5; }
+  65% { opacity: 1; }
+  70% { opacity: 0.5; }
+  74% { opacity: 1; }
+  /* Fast pulses */
+  78% { opacity: 0.4; }
+  81% { opacity: 1; }
+  84% { opacity: 0.4; }
+  87% { opacity: 1; }
+  /* Rapid pulses */
+  89% { opacity: 0.3; }
+  91% { opacity: 1; }
+  93% { opacity: 0.3; }
+  95% { opacity: 1; }
+  97% { opacity: 0.3; }
+  99% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.name-container {
+  display: inline-flex;
+  align-items: baseline;
+  position: relative;
+  animation: pulse-fade 15s linear infinite;
+}
+
+.n-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  animation: shrink-wrapper 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  vertical-align: baseline;
+  line-height: 1;
+  height: 1em;
+}
+
+.n-upper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  animation: fade-out-n 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.n-lower {
+  position: relative;
+  display: inline-block;
+  animation: fade-in-n 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.compress-vowel {
+  display: inline-block;
+  animation: compress-vowel 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.compress-vowel:nth-child(3) { animation-delay: 0s; }
+.compress-vowel:nth-child(5) { animation-delay: 0.15s; }
+</style>
+
 <article class="flex flex-col gap-y-4">
-  <h1 class="uppercase font-bold">About me</h1>
+  <h1 class="uppercase font-bold font-display">About me</h1>
     <p class="text-sm">
-      Hi, I'm Nikodem (niko), a platform engineer.
+      <span class="whitespace-nowrap">Hi, I'm <span class="name-container"><span class="n-wrapper"><span class="n-upper">N</span><span class="n-lower">n</span></span><span class="compress-vowel">i</span>k<span class="compress-vowel">o</span>dem</span>,</span> a platform engineer. I go by niko.{% tooltip "*" %}hmu if you want to sell me a cheap niko TLD :){% endtooltip %}
     </p>
 
     <p class="text-sm">
@@ -22,7 +146,7 @@ links:
       Outside of tech, I enjoy classical music (inspired by my years playing the piano), travelling and doing sports such as hiking, running or gym.
     </p>
 
-  <h1 class="uppercase font-bold">Links</h1>
+  <h1 class="uppercase font-bold font-display">Links</h1>
   <ul class="list-dash text-sm">
     {% for link in links %}
     <li>
@@ -33,7 +157,7 @@ links:
     {% endfor %}
   </ul>
 
-  <h1 class="uppercase font-bold">Contact</h1>
+  <h1 class="uppercase font-bold font-display">Contact</h1>
   <p class="text-sm">
     You can contact me at contact at nkdem dot net(<a
       href="/assets/pgp.asc"
