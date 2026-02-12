@@ -10,6 +10,26 @@
     --font-logo: "Azeret Mono", monospace;
 }
 
+/* Prevent horizontal overflow on mobile */
+html, body {
+    max-width: 100%;
+}
+
+pre {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+img, video, svg, table {
+    max-width: 100%;
+    height: auto;
+}
+
+main {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
 /* Use Space Grotesk for prose headings */
 .prose h1,
 .prose h2,
@@ -48,6 +68,7 @@
     font-size: 0.75rem;
     border-radius: 0.25rem;
     white-space: nowrap;
+    max-width: 90vw;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
