@@ -32,8 +32,8 @@ links: [
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col font-sans bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200">
-    <div class="flex flex-col flex-1 mx-4 my-4">
+  <body class="min-h-screen flex flex-col font-sans bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200 overflow-x-hidden">
+    <div class="flex flex-col mx-4 my-4 overflow-hidden">
       <nav class="flex flex-row gap-4 items-center w-fit">
         <a class="font-logo font-normal text-xl w-fit text-nowrap logo-expand-wrapper" href="/">~n<span class="logo-vowel">i</span>k<span class="logo-vowel">o</span>dem</a>
         <ul class="flex flex-row gap-2 italic">
@@ -45,7 +45,7 @@ links: [
         </ul>
       </nav>
 
-      <main class="relative mx-auto max-w-lg mt-8 md:mt-0 w-full">
+      <main class="relative mx-auto max-w-lg mt-8 md:mt-0 w-full min-w-0 overflow-x-hidden">
         <h1 class="uppercase text-lg font-display">
           {% if title %}
           {{ title }}
@@ -72,25 +72,14 @@ links: [
         {% endif %}
       </main>
     </div>
-    <footer class="flex flex-col p-4 text-center">
-      <p>
-        <a class="text-red-800 dark:text-red-400 font-bold"
-          href="/feed.xml"
-        >
-         RSS Feed
-        </a>
-      </p>
-      <p>
-        Site Version:
-        <a
-          class="text-orange-300 dark:text-orange-400 underline"
-          href="https://github.com/nkdem/personal-site/tree/{{ site.version }}"
-          >{{ site.version }}</a
-        >
-      </p>
-      <p>
-        <a onclick="toggleTheme()" style="cursor:pointer">light/dark</a>
-      </p>
+    <footer class="flex flex-row gap-4 justify-center items-center px-4 py-2 text-sm">
+      <a class="text-red-800 dark:text-red-400 font-bold" href="/feed.xml">RSS</a>
+      <span>·</span>
+      <a class="text-orange-300 dark:text-orange-400 underline"
+        href="https://github.com/nkdem/personal-site/tree/{{ site.version }}"
+        >{{ site.version }}</a>
+      <span>·</span>
+      <a onclick="toggleTheme()" style="cursor:pointer">light/dark</a>
       <script>
         function toggleTheme(){
           var d=document.documentElement.classList.toggle('dark');
