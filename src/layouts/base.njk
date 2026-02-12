@@ -32,11 +32,11 @@ links: [
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col font-mono bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200">
-    <div class="flex md:flex-row flex-col flex-1 mx-4 my-4">
-      <nav class="flex md:flex-col flex-row gap-4 items-center w-fit">
-        <a class="font-bold text-xl w-fit text-nowrap" href="/">Nikodem Bieniek </a>
-        <ul class="flex md:flex-col flex-row gap-2 italic w-full">
+  <body class="min-h-screen flex flex-col font-sans bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200">
+    <div class="flex flex-col flex-1 mx-4 my-4">
+      <nav class="flex flex-row gap-4 items-center w-fit">
+        <a class="font-logo font-normal text-xl w-fit text-nowrap logo-expand-wrapper" href="/">~n<span class="logo-vowel">i</span>k<span class="logo-vowel">o</span>dem</a>
+        <ul class="flex flex-row gap-2 italic">
           {% for link in links %}
           <li>
             <a href="{{ link.url }}">{{ link.title }}</a>
@@ -46,7 +46,7 @@ links: [
       </nav>
 
       <main class="relative mx-auto max-w-lg mt-8 md:mt-0 w-full">
-        <h1 class="uppercase text-lg">
+        <h1 class="uppercase text-lg font-display">
           {% if title %}
           {{ title }}
           {% else %}
