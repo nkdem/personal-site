@@ -1,7 +1,11 @@
-nkdem.net, www.nkdem.net {
-	reverse_proxy personal-site:80
-}
+:80 {
+	@personalsite host nkdem.net www.nkdem.net
+	handle @personalsite {
+		reverse_proxy personal-site:80
+	}
 
-numra.nkdem.net {
-	reverse_proxy numra-web:80
+	@numra host numra.nkdem.net
+	handle @numra {
+		reverse_proxy numra-web:80
+	}
 }
