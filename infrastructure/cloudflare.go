@@ -47,5 +47,17 @@ func setupCloudflareDNS(ctx *pulumi.Context, server *hcloud.Server) error {
 		return err
 	}
 
+	// CNAME: numra → nkdem.net (proxied through Cloudflare)
+	_, err = cloudflare.NewRecord(ctx, "numra-cname-record", &cloudflare.RecordArgs{
+		ZoneId:  pulumi.String(zoneID),
+		Name:    pulumi.String("numra"),
+		Type:    pulumi.String("CNAME"),
+		Content: pulumi.String(cfg.Domain),
+		Proxied: pulumi.Bool(true),
+	}, pulumi.Provider(provider))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

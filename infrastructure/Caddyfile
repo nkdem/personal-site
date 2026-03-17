@@ -1,0 +1,7 @@
+nkdem.net, www.nkdem.net {
+	reverse_proxy personal-site:80
+}
+
+numra.nkdem.net {
+	reverse_proxy numra-web:80
+}

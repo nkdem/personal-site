@@ -1,7 +1,32 @@
 services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+    depends_on:
+      - personal-site
+
   personal-site:
     image: ghcr.io/nkdem/personal-site:${IMAGE_TAG:-latest}
     container_name: personal-site
     restart: unless-stopped
-    ports:
-      - "80:80"
+    networks:
+      - web
+
+networks:
+  web:
+    name: web
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
