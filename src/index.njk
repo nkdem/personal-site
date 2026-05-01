@@ -2,10 +2,11 @@
 layout: base
 title: "Homepage"
 prose: false
-links:
+socialLinks:
   [
     { name: "GitHub", href: "https://github.com/nkdem" },
     { name: "LinkedIn", href: "https://www.linkedin.com/in/nikodemb" },
+    { name: "X", href: "https://x.com/nkdem_b" },
   ]
 ---
 
@@ -136,11 +137,14 @@ links:
 <article class="flex flex-col gap-y-4">
   <h1 class="uppercase font-bold font-display">About me</h1>
     <p class="text-sm">
-      <span class="whitespace-nowrap">Hi, I'm <span class="name-container"><span class="n-wrapper"><span class="n-upper">N</span><span class="n-lower">n</span></span><span class="compress-vowel">i</span>k<span class="compress-vowel">o</span>dem</span>,</span> a platform engineer. I go by niko.{% tooltip "*" %}hmu if you want to sell me a cheap niko TLD :){% endtooltip %}
+      <span class="whitespace-nowrap">Hi, I'm <span class="name-container"><span class="n-wrapper"><span class="n-upper">N</span><span class="n-lower">n</span></span><span class="compress-vowel">i</span>k<span class="compress-vowel">o</span>dem</span>.</span> I go by niko.{% tooltip "*" %}hmu if you want to sell me a cheap niko TLD :){% endtooltip %}
     </p>
 
     <p class="text-sm">
-      My main interests are in infrastructure and backend development, particularly cloud computing, distributed systems, and DevOps. I consider myself a versatile programmer, thanks to early exposure to different technologies.
+      My main interests are in infrastructure and backend development, particularly cloud computing, distributed systems, DevOps, and the rough edges of running compute-heavy workloads.
+    </p>
+    <p class="text-sm">
+      I'm co-founder and CTO at <a href="https://expanse.sh" class="text-red-800 dark:text-red-400 hover:underline font-bold">Expanse</a>, part of Y Combinator's P26 batch. We're building tools that help organisations make better use of their infrastructure, compute, and GPU clusters.
     </p>
     <p class="text-sm">
       Outside of tech, I enjoy classical music (inspired by my years playing the piano), travelling and doing sports such as hiking, running or gym.
@@ -148,7 +152,7 @@ links:
 
   <h1 class="uppercase font-bold font-display">Links</h1>
   <ul class="list-dash text-sm">
-    {% for link in links %}
+    {% for link in socialLinks %}
     <li>
       <a href="{{ link.href }}" class="text-red-800 dark:text-red-400 hover:underline font-bold">
         {{ link.name }}
